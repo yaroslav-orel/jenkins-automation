@@ -1,0 +1,19 @@
+---
+
+- name: Include variables
+  ansible.builtin.include_vars: 
+    dir: vars
+
+- name: Install dependencies (RedHat)
+  ansible.builtin.include_tasks: dependencies-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Install dependencies (Debian)
+  ansible.builtin.include_tasks: dependencies-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Run initial configuration
+  ansible.builtin.include_tasks: service-config.yml
+
+- name: Start Jenkins
+  ansible.builtin.include_tasks: start-jenkins.yml

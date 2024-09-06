@@ -1,0 +1,37 @@
+---
+- name: Ensure Jenkins daemon is started
+  ansible.builtin.systemd_service: 
+    name: jenkins
+    state: started
+- name: Wait until Jeknins is up and running
+  uri: 
+    url: http://localhost:{{ jenkins_port }}/cli
+    method: GET
+    return_content: true
+    status_code: 200,403
+  changed_when: false
+- name: Ensure security script is not exposed after initial startup
+  ansible.builtin.file: 
+    path: "{{ jenkins_home }}/init.groovy.d/security.groovy"
+    state: absent
+
+- name: Ensure plugins are installed
+  community.general.jenkins_plugin: 
+    name: "{{ item }}"
+    url: "http://localhost:{{ jenkins_port }}"
+    jenkins_home: "{{ jenkins_home }}"
+    url_username: "{{ jenkins_admin_username }}"
+    url_password: "{{ jenkins_admin_password }}"
+    state: present
+    with_dependencies: true
+  with_items: "{{ plugins }}"
+  register: plugin_result
+  until: plugin_result is success
+  retries: 3
+  delay: 2
+- name: Ensure Jenkins restart on plugin change
+  ansible.builtin.systemd_service: 
+    name: jenkins
+    state: restarted
+    daemon_reload: true
+  when: plugin_result.changed

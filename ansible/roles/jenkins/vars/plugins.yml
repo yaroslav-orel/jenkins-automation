@@ -1,0 +1,38 @@
+---
+plugins: 
+  - build-timeout
+  - dark-theme
+  - git
+  - cloudbees-folder
+  - build-timeout
+  - credentials-binding
+  - rebuild
+  - dashboard-view
+  - configuration-as-code
+  - build-name-setter
+  - config-file-provider
+  - embeddable-build-status
+  - ssh-agent
+  - throttle-concurrents
+  - timestamper
+  - ws-cleanup
+  - gradle
+  - nodejs
+  - htmlpublisher
+  - junit 
+  - workflow-aggregator
+  - github-branch-source
+  - pipeline-github-lib
+  - pipeline-stage-view
+  - conditional-buildstep
+  - parameterized-trigger
+  - copyartifact
+  - git-parameter
+  - ssh-slaves
+  - matrix-auth
+  - pam-auth
+  - ldap
+  - role-strategy
+  - email-ext
+  - mailer
+  

@@ -1,0 +1,16 @@
+---
+- name: Ensure Jenkins repo is added
+  ansible.builtin.yum_repository:
+    name: Jenkins-stable
+    description: Jenkins stable repository
+    file: jenkins
+    baseurl: http://pkg.jenkins.io/redhat-stable
+    gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+    gpgcheck: true
+- name: Ensure Java and Jenkins are installed
+  ansible.builtin.dnf: 
+    name: 
+      - java-17-amazon-corretto
+      - jenkins
+    update_cache: true
+    state: present
